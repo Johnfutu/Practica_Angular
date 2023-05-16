@@ -1,0 +1,19 @@
+<section class="d-flex aling-item-center justify-content-center">
+    <form [formGroup]="formLogin">
+        <div class="row mt-4 text-center">
+            <div class="col-12">
+                <!-- asginamos la imagen a traves de una variable-->
+                <img src="{{logo}}" alt="Logo">
+            </div>
+            <div class="col-12">
+                <input type="text" pInputText formControlName="username" autocomplete="off">
+            </div>
+            <div class="raw mt-4 text-center " >
+                <p-password [(ngModel)]="value1" [feedback]="false" formControlName="password"></p-password>
+            </div>
+            <div class="col-12 mt-2">
+                <button pButton pRipple label="Submit" class="p-button-success"  (click)="login()"></button>
+            </div>
+        </div>
+    </form>
+</section>
