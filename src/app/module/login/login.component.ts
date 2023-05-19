@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { properties } from '../../../assets/properties/properties';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { apiService } from '../services/api.service';
+import { ConstantUri } from 'src/app/utils/constantUri';
 
 @Component({
   selector: 'app-login',
@@ -14,6 +16,7 @@ export class LoginComponent implements OnInit {
 
  constructor (
   private fb: FormBuilder,
+  private readonly ApiService: apiService<any>
  ) { }
  ngOnInit(): void {
   this.formLogin = this.fb.group({
@@ -30,6 +33,22 @@ export class LoginComponent implements OnInit {
       }
       return;
     }
+
+    const {username, password } = this.formLogin.value;
+
+    const body = {
+      username,
+      password,
+      requestoken: sessionStorage.getItem('requestToken')
+    }
+
+    const configPost = {ulr: ConstantUri.validateWithLogin, params:{api_Key: ConstantUri.apikey}, body} 
+    this.ApiService.postService(configPost).subscribe(val =>{
+      const { request_Token } = val;
+      sessionStorage.setItem('requestToken', request_Token); 
+    });
+
+
     console.log(this.formLogin.value);
  }
 }

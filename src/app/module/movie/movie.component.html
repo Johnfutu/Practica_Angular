@@ -1,1 +1,20 @@
-<p>movie works!</p>
+
+<section>
+    <div class="row" mt-4>
+        <div class="col-4">
+            <p-card header="Advanced Card" subheader="Card Subheader" [style]="{ width: '360px' }">
+                <ng-template pTemplate="header">
+                    <img alt="Card" src="https://primefaces.org/cdn/primeng/images/usercard.png" />
+                </ng-template>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
+                    quas!
+                </p>
+                <ng-template pTemplate="footer">
+                    <button pButton pRipple label="Ver detalle" class="p-button-success"  (click)="seeDetail()" icon="pi pi-eye"></button>
+                </ng-template>
+            </p-card>
+        </div>
+    </div>
+</section>
+
