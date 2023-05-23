@@ -1,23 +1,26 @@
 import { Component } from '@angular/core';
 import { apiService } from './module/services/api.service';
 import { ConstantUri } from './utils/constantUri';
+import { BaseComponent } from './shared/base/base.component';
+import { LoginNameSpace } from './model/login.model';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-
+export class AppComponent extends BaseComponent<LoginNameSpace.Login>{
+  override set setResponseService({request_token}: LoginNameSpace.Login) {
+    sessionStorage.setItem('requestToken', request_token); 
+  }
   constructor(
-    private apiService: apiService<any>
+    protected override readonly apiService: apiService<LoginNameSpace.Login>
   ) {
 
-    const getConfig = { url: ConstantUri.tokenNew, params: {api_key: ConstantUri.apikey} }
-    this.apiService.getService(getConfig).subscribe(val =>{
-      const { request_Token } = val
-     sessionStorage.setItem('requestToken', request_Token); 
-    });
+    super(apiService);
+    this.paramsConfig.url = ConstantUri.tokenNew;
+    this.paramsConfig.params.api_key = ConstantUri.apikey;
+    this.getRequest();
   }
   title = 'movies';
 }

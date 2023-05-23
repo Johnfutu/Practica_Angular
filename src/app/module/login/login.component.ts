@@ -1,38 +1,43 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { properties } from '../../../assets/properties/properties';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { apiService } from '../services/api.service';
 import { ConstantUri } from 'src/app/utils/constantUri';
+import { BaseComponent } from 'src/app/shared/base/base.component';
+import { LoginNameSpace } from 'src/app/model/login.model';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent extends BaseComponent<LoginNameSpace.Login> implements OnInit {
   value1!: string
-  formLogin: FormGroup = new FormGroup ({});
   logo = properties.logo;
+  formLogin: FormGroup = new FormGroup ({});
+  router: any;
+  override set setResponseService({request_token}: LoginNameSpace.Login) {
+    sessionStorage.setItem('requestToken', request_token); 
+    sessionStorage.setItem('LoginFlag', 'true'); 
+    this.router.navigate(['populares'])
+  }
 
  constructor (
   private fb: FormBuilder,
-  private readonly ApiService: apiService<any>
- ) { }
- ngOnInit(): void {
+  protected override readonly apiService: apiService<LoginNameSpace.Login>
+ ) { 
+  super(apiService);
+ }
+ override ngOnInit(): void {
   this.formLogin = this.fb.group({
     username: ['', Validators.required],
     password: ['', Validators.required],
   })
  }
 
- login(){
-    if (this.formLogin.invalid){
-      this.formLogin.markAllAsTouched();
-      for (const key in this.formLogin.controls){
-        this.formLogin.controls[key].markAsDirty();
-      }
-      return;
-    }
+ login() {
+  if (this.isFormInvalid(this.formLogin)) return;
 
     const {username, password } = this.formLogin.value;
 
@@ -42,13 +47,9 @@ export class LoginComponent implements OnInit {
       requestoken: sessionStorage.getItem('requestToken')
     }
 
-    const configPost = {ulr: ConstantUri.validateWithLogin, params:{api_Key: ConstantUri.apikey}, body} 
-    this.ApiService.postService(configPost).subscribe(val =>{
-      const { request_Token } = val;
-      sessionStorage.setItem('requestToken', request_Token); 
-    });
-
-
-    console.log(this.formLogin.value);
+    this.paramsConfig.url =  ConstantUri.validateWithLogin;
+    this.paramsConfig.params =  {api_Key: ConstantUri.apikey};
+    this.paramsConfig.body =  body;
+    this.postRequest();
  }
 }

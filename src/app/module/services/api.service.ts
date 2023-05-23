@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import { Observable, catchError, map, throwError} from 'rxjs';
 import { Header } from 'primeng/api';
+import { ApiNameSpace } from 'src/app/model/api.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class apiService <T> {
     private http: HttpClient,
   ) { }
 
-  postService(paramsReq: any): Observable<T>{
+  postService(paramsReq: ApiNameSpace.Params): Observable<T>{
     const headers = new HttpHeaders({
       accept: 'application/json',
     }); 
@@ -29,7 +30,7 @@ export class apiService <T> {
     );
   }
 
-  getService(paramsReq: any): Observable<T>{
+  getService(paramsReq: ApiNameSpace.Params): Observable<T>{
     const headers = new HttpHeaders({
       accept: 'application/json',
     }); 

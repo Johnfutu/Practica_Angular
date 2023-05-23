@@ -1,17 +1,27 @@
 
+<div *ngif="loading" class="row d-flex justify-content-center mt-4 ">
+    <p-progressSpinner></p-progressSpinner>
+</div>
+
+
 <section>
-    <div class="row" mt-4>
-        <div class="col-4">
-            <p-card header="Advanced Card" subheader="Card Subheader" [style]="{ width: '360px' }">
+    <div *ngIf="!loading"  class="row" mt-4>
+        <div *ngFor="let item of movies.results" class="col-4 mb-3">
+            <p-card header="movie.title"[style]="{ width: '360px' }">
                 <ng-template pTemplate="header">
-                    <img alt="Card" src="https://primefaces.org/cdn/primeng/images/usercard.png" />
+                    <img alt="Card" [src]="imgBaseUrl+ movies" alt="movies" class="img-movies">
                 </ng-template>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
-                    quas!
-                </p>
+                <p>{{ movies.overview}}</p>
+                    <strong> Fecha de lanzamiento</strong> <label>{{ movies.release.date}}</label>
+               <div>
+                    <strong>Promedio de votos:</strong> <label>{{ movies.vote.averague}}</label>
+               </div>
+                <div>
+                    <strong>Popularidad: </strong> <label>{{ movies.popularity}}</label>
+               </div>
+
                 <ng-template pTemplate="footer">
-                    <button pButton pRipple label="Ver detalle" class="p-button-success"  (click)="seeDetail()" icon="pi pi-eye"></button>
+                    <button pButton pRipple label="Ver detalle" class="p-button-success"  (click)="seeDetail(movies.id)" icon="pi pi-eye"></button>
                 </ng-template>
             </p-card>
         </div>

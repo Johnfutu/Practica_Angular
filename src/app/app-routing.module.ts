@@ -1,6 +1,7 @@
 import { NgModule, Component } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes, CanActivate } from '@angular/router';
 import { LoginComponent } from './module/login/login.component';
+import { MoviesGuard } from './guards/movies.guard';
 
 const routes: Routes = [
   {
@@ -9,7 +10,8 @@ const routes: Routes = [
   },
   {
     path: 'populares',
-    loadChildren: () => import('../app/module/movie/movie.routing.module').then(val => val.MovieRoutingModule)
+    loadChildren: () => import('../app/module/movie/movie.routing.module').then(val => val.MovieRoutingModule),
+    canActivate: [MoviesGuard]
   },
   {
     path: '**',

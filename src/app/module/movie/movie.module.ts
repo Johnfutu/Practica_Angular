@@ -4,7 +4,9 @@ import { MovieDetailsComponent } from './movie-details/movie-details.component';
 import { MovieRoutingModule } from './movie.routing.module';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
-
+import { CommonModule } from '@angular/common';
+import { TagModule } from 'primeng/tag';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 @NgModule({
   declarations: [
     MovieComponent,
@@ -13,7 +15,10 @@ import { ButtonModule } from 'primeng/button';
   imports: [
     MovieRoutingModule,
     CardModule,
-    ButtonModule
+    ButtonModule,
+    CommonModule,
+    TagModule,
+    ProgressSpinnerModule
   ],
   providers: [],
 })

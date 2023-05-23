@@ -1,31 +1,48 @@
 import { Component, OnInit } from '@angular/core';
-import { apiService } from '../services/api.service';
+import { Router } from '@angular/router';
 import { ConstantUri } from 'src/app/utils/constantUri';
+import { MoviesModule, } from '../../model/movies.model';
+import { BaseComponent } from 'src/app/shared/base/base.component';
+import { apiService } from '../services/api.service';
 
 @Component({
   selector: 'app-movie',
   templateUrl: './movie.component.html',
   styleUrls: ['./movie.component.css']
 })
-export class MovieComponent implements OnInit{
+export class MovieComponent extends BaseComponent<MoviesModule.MoviesResponse> implements OnInit{
 
-  movie: any[] =[];
+  movies: MoviesModule.MoviesResponse = {
+    page: 1,
+    results: [],
+    total_pages: 0,
+    total_results: 0,
+    release: '',
+    vote: 0,
+    popularity: 0,
+    id: 0,
+    overview: 0
+  };
 
+
+  imgBaseUrl = ConstantUri.pathImg;
+  override set setResponseService(val: MoviesModule.MoviesResponse ){
+    this.movies = val;
+  }
   constructor(
-    private readonly apiService: apiService<any>,
-  ) { }
-
-  ngOnInit(): void {
-
-    const getConfig= { url: ConstantUri.PopularMovie, params: {api_key: ConstantUri.apikey} };
-
-    this.apiService.getService(getConfig).subscribe(val =>{
-      const { request_Token } = val
-     sessionStorage.setItem('requestToken', request_Token); 
-    });
+    private readonly router: Router,
+    protected override  apiService: apiService<MoviesModule.MoviesResponse>
+  ) {
+    super(apiService);
   }
 
-  seeDetail() {
+  override ngOnInit(): void {
+    this.paramsConfig.url = ConstantUri.PopularMovie;
+    this.paramsConfig.params.api_key = ConstantUri.apikey;
+    this.getRequest();
+  }
 
+  seeDetail(id: number) {
+    this.router.navigate([`populares/detalle/${id}`]);
   }
 }
